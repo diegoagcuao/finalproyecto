@@ -1,0 +1,29 @@
+<div class="modal fade" id="modalAgregarLista" tabindex="-1" role="dialog" aria-labelledby="modalAgregarListaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAgregarListaLabel">Agregar Enlace a Lista</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Mensaje si no hay listas -->
+                <p id="no_listas_message" class="text-danger" style="display:none;">Aún no hay listas creadas para poder agregar el enlace.</p>
+
+                <!-- Contenedor del select que se oculta si no hay listas -->
+                <div id="lista_select_container">
+                    <form id="formAgregarLista">
+                        <div class="form-group">
+                            <select class="form-control" id="lista_id" name="lista_id"></select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="agregarEnlaceALista()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>

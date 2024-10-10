@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Registrarse - LinkScribe{% endblock %}
+
+{% block content %}
+    <h2 class="my-4">Registrarse</h2>
+    <form action="/register" method="POST" class="form-group">
+        <label for="username">Nombre de usuario:</label>
+        <input type="text" id="username" name="username" class="form-control mb-3" required>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" id="password" name="password" class="form-control mb-3" required>
+
+        <button type="submit" class="btn btn-primary">Registrarse</button>
+    </form>
+{% endblock %}

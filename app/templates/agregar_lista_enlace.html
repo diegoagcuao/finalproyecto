@@ -1,0 +1,13 @@
+<h2>Agregar Enlaces a la Lista: {{ lista.nombre }}</h2>
+
+<form action="/agregar_enlace_lista/{{ lista.id }}" method="POST">
+    <div class="form-group">
+        <label for="enlace_id">Selecciona un enlace</label>
+        <select id="enlace_id" name="enlace_id" class="form-control">
+            {% for enlace in enlaces %}
+                <option value="{{ enlace.id }}">{{ enlace.titulo }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Enlace</button>
+</form>

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Enlaces - LinkScribe{% endblock %}
+
+{% block content %}
+    <h3 class="my-4">Bienvenido, {{ current_user.username }}</h3>
+    <form action="/procesar_link" method="POST" class="form-group">
+        <label for="enlace">Ingresa el enlace:</label>
+        <input type="text" id="enlace" name="enlace" class="form-control mb-3" placeholder="https://ejemplo.com" required>
+        <button type="submit" class="btn btn-primary">Procesar Enlace</button>
+    </form>
+
+    <hr class="my-4"> 
+
+    <h3 class="my-4">Mis Enlaces Guardados ({{ links | length }})</h3>
+
+    <!-- Input para filtrar enlaces -->
+    <input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar enlaces...">
+
+    {% if links %}
+        <ul class="list-group" id="linksList">
+            {% for link in links %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="d-flex">
+                        <!-- Imagen del enlace o imagen por defecto -->
+                        <div class="mr-3">
+                            <img src="{{ link.imagen }}" alt="Imagen de vista previa" style="min-width: 80px;max-width: 80px; max-height: 60px;">
+                            <p class="text-muted small" title="Fecha guardado"><span class="badge badge-secondary">{{ link.fecha_procesamiento.strftime('%d-%m-%Y') }}</span></p>
+                        </div>
+                        <!-- Título, descripción y categoría del enlace -->
+                        <div>
+                            <a href="{{ link.enlace }}" target="_blank" class="h6 d-block">{{ link.titulo }}</a>
+                            <span>{{ link.descripcion }}</span><br/>
+                            <strong>{{ link.categoria }}</strong>
+                        </div>
+                    </div>
+                
+                    <!-- Iconos -->
+                    <div class="ml-auto d-flex align-items-center">
+                        <form action="/eliminar_link/{{ link.id }}" method="POST" style="display:inline;">
+                            <!-- Icono de eliminar (X) -->
+                            <button type="submit" class="btn btn-danger btn-sm mr-2" title="Eliminar">
+                                <i class="fas fa-times"></i> <!-- Este es el ícono de la "X" -->
+                            </button>
+                        </form>
+                        <!-- Icono de agregar a lista (+) -->
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalAgregarLista" onclick="openModal({{ link.id }})" title="Agregar a Lista">
+                            <i class="fas fa-plus"></i> <!-- Este es el ícono del "+" -->
+                        </button>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <p class="text-muted" id="noResultsMessage" style="display:none;">No hay coincidencias.</p>
+    {% else %}
+        <p class="text-muted">No tienes ningún enlace guardado.</p>
+    {% endif %}
+
+    {% include "modals/modal_agregar_lista.html" %}
+    {% include "modals/modal_exito.html" %}
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/filter.js') }}"></script>
+{% endblock %}

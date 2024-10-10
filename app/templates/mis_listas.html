@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Mis Listas de Enlaces{% endblock %}
+
+{% block content %}
+<h3 class="my-4">Mis Listas de Enlaces ({{ listas | length }})</h3>
+
+<a href="{{ url_for('listas.crear_lista') }}" class="btn btn-primary mb-3">Crear Nueva Lista</a>
+
+{% if listas %}
+<div class="accordion" id="accordionListas">
+    {% for lista in listas %}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center" id="heading{{ lista.id }}">
+            <h5 class="mb-0">
+                <button class="btn btn-link text-decoration-none text-dark lista-nombre border-0" type="button" data-toggle="collapse" data-target="#collapse{{ lista.id }}" aria-expanded="true" aria-controls="collapse{{ lista.id }}" onclick="cargarEnlaces({{ lista.id }})">
+                    <strong>{{ lista.nombre | capitalize }}</strong> <small>({{ lista.descripcion | capitalize }})</small>
+                </button>
+            </h5>
+
+            <div>
+                <span class="btn btn-secondary btn-sm" title="Fecha creación"><strong>{{ lista.fecha_creacion.strftime('%d-%m-%Y') }}</strong></span>
+                <a href="{{ url_for('listas.agregar_enlaces_a_lista', lista_id=lista.id) }}" class="btn btn-success btn-sm" title="Agregar enlaces"><i class="fas fa-plus"></i> </a> 
+                <a href="{{ url_for('listas.compartir_lista', lista_id=lista.id) }}" class="btn btn-info btn-sm" title="Compartir lista"><i class="fas fa-share"></i></a>
+                <form action="{{ url_for('listas.eliminar_lista', lista_id=lista.id) }}" method="POST" class="d-inline-block">
+                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar"><i class="fas fa-times"></i></button>
+                </form>
+            </div>
+        </div>
+
+        <div id="collapse{{ lista.id }}" class="collapse" aria-labelledby="heading{{ lista.id }}" data-parent="#accordionListas">
+            <div class="card-body">
+                <ul id="listaEnlaces{{ lista.id }}" class="list-group">
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p class="text-muted">No tienes ninguna lista guardada.</p>
+{% endif %}
+
+<hr class="my-4"> 
+
+<h3 class="my-4">Listas Compartidas Conmigo ({{ listas_compartidas | length }})</h3>
+
+{% if listas_compartidas %}
+<div class="accordion" id="accordionListasCompartidas">
+    {% for lista in listas_compartidas %}
+    <div class="card-header d-flex justify-content-between align-items-center" id="headingCompartida{{ lista.id }}">
+        <h5 class="mb-0">
+            <a href="{{ url_for('listas.ver_lista_compartida', lista_id=lista.id) }}" class="btn btn-link text-decoration-none text-dark lista-nombre">
+                <strong>{{ lista.nombre | capitalize }}</strong> <small>({{ lista.descripcion | capitalize }})</small>
+            </a>
+        </h5>
+        <span> 
+            <button class="btn btn-secondary btn-sm" title="Nombre del usuario que compartió la lista">
+                <i class="fas fa-user"></i> {{ lista.usuario.username }} 
+            </button>
+        </span>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p class="text-muted">No se te ha compartido ninguna lista.</p>
+{% endif %}
+
+
+<script src="{{ url_for('static', filename='js/listas.js') }}"></script>
+{% endblock %}

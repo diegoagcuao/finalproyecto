@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Agregar Enlace a Lista{% endblock %}
+
+{% block content %}
+<h1 class="my-4">Agregar Enlace a Lista</h1>
+
+<p>Has guardado el siguiente enlace:</p>
+<p><a href="{{ link.enlace }}" target="_blank">{{ link.titulo }}</a></p>
+
+<form action="/agregar_enlace_a_lista/{{ link.id }}" method="POST">
+    <div class="form-group">
+        <label for="lista_id">Selecciona una lista para agregar el enlace:</label>
+        <select id="lista_id" name="lista_id" class="form-control">
+            {% for lista in listas %}
+                <option value="{{ lista.id }}">{{ lista.nombre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Agregar Enlace a Lista</button>
+</form>
+
+{% endblock %}

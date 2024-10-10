@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Compartir Lista{% endblock %}
+
+{% block content %}
+<h3 class="my-4">Compartir Lista: {{ lista.nombre }}</h3>
+
+<!-- Formulario para agregar usuarios a la lista compartida -->
+<form action="{{ url_for('listas.compartir_lista', lista_id=lista.id) }}" method="POST">
+    <div class="form-group">
+        <label for="username">Nombre de usuario para compartir:</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Compartir Lista</button>
+        <a href="{{ url_for('listas.mis_listas') }}" class="btn btn-secondary">Cancelar</a>
+    </div>
+</form>
+
+<hr class="my-4"> 
+
+<!-- Tabla para mostrar los usuarios con los que se ha compartido la lista -->
+<h3>Usuarios con los que se ha compartido:</h3>
+{% if usuarios_compartidos %}
+<table class="table text-center" >
+    <thead>
+        <tr>
+            <th>Usuario</th>
+            <th>Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for compartir in usuarios_compartidos %}
+        <tr>
+            <td>{{ compartir.usuario.username }}</td>
+            <td>
+                <form action="{{ url_for('listas.eliminar_compartir_lista', lista_id=lista.id, user_id=compartir.user_id) }}" method="POST">
+                    <button type="submit" class="btn btn-danger btn-sm" alt="Dejar de compartir"><i class="fas fa-times"></i></button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% else %}
+    <p class="text-muted">No se ha compartido esta lista con ningún usuario.</p>
+{% endif %}
+{% endblock %}

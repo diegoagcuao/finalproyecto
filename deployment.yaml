@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-aplicacion-flask
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mi-aplicacion-flask
+  template:
+    metadata:
+      labels:
+        app: mi-aplicacion-flask
+    spec:
+      containers:
+      - name: mi-aplicacion-flask
+        image: acrclasificador.azurecr.io/appfinal
+        ports:
+        - containerPort: 8080
